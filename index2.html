@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rock, Paper, Scissors</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+<body>
+    <div class="buttons">
+        <button class='btn' id='Rock'>Rock</button>
+        <button class='btn' id='Paper'>Paper</button>
+        <button class='btn' id='Scissors'>Scissors</button>
+    </div>
+    <div class="results">
+        <p id="playerScore">Player Score: 0</p>
+        <p id="computerScore">Computer Score: 0</p>
+        <p id="res"></p>
+        <p id="finalRes"></p>
+    </div>
+  <script>
+    // Your JavaScript goes here!
+
+    function capitalize(word){
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }
+
+    function getRandomArbitrary(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;;
+    }
+
+    function computerPlay() {
+      let random = getRandomArbitrary(1, 3);
+      switch(random){
+        case 1: return "Rock";
+        case 2: return "Paper";
+        case 3: return "Scissors";
+      }   
+    }
+
+    function playRound(playerSelection, computerSelection) {
+      var choices = ["Rock", "Paper", "Scissors"];
+      playerSelection = capitalize(playerSelection);
+      choice1 = choices.indexOf(playerSelection);
+      choice2 = choices.indexOf(computerSelection);
+      if (choice1 == choice2) {
+          return "It's a Tie!!!";
+      }
+      if (choice1 == choices.length - 1 && choice2 == 0) {
+          return "Computer wins! " + computerSelection + " beats " + playerSelection + ".";
+      }
+      if (choice2 == choices.length - 1 && choice1 == 0) {
+          return "You win! " + playerSelection + " beats " + computerSelection + ".";
+      }
+      if (choice1 > choice2) {
+          return "You win! " + playerSelection + " beats " + computerSelection + ".";
+      } else {
+          return "Computer wins! " + computerSelection + " beats " + playerSelection + ".";
+      }
+    }
+
+    //console.log(game());
+    const buttons = document.querySelectorAll('.btn');
+    let counterPlayer = 0;
+    let counterComputer = 0;
+
+    buttons.forEach(btn => btn.addEventListener('click', function(e){
+        document.getElementById("finalRes").innerHTML = "";
+        if(counterPlayer === 5 || counterComputer ===5){
+            counterPlayer = 0;
+            counterComputer = 0;
+            document.getElementById("playerScore").innerHTML = "Player Score: " + counterPlayer;
+            document.getElementById("computerScore").innerHTML = "Computer Score: " + counterComputer;
+        }
+        let playerSelection = e.target.id;
+        let computerSelection = computerPlay();
+        let result = playRound(playerSelection, computerSelection);
+        document.getElementById("res").innerHTML = result;
+        if (result.charAt(0) == 'Y'){
+          counterPlayer++;
+          document.getElementById("playerScore").innerHTML = "Player Score: " + counterPlayer;
+        } else if(result.charAt(0) == 'C'){
+          counterComputer++;
+          document.getElementById("computerScore").innerHTML = "Computer Score: " + counterComputer;
+        }
+        if(counterPlayer === 5 || counterComputer ===5){
+            if (counterPlayer > counterComputer){
+                document.getElementById("finalRes").innerHTML = "You win the game.";
+            } else{
+                document.getElementById("finalRes").innerHTML = "Computer wins the game.";
+            }
+        } 
+    }));
+  
+    </script>
+</body>
+</html>
